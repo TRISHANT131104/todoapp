@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To do List</title>
+    <link rel="stylesheet" href="{% static 'todolist/input.css' %}">
+</head>
+<body>
+    <div>
+        <h1>What to do today</h1>
+        <form action="{% url 'add' %}" method="POST" role="form">
+            {% csrf_token %}
+            {{form.text}}
+            <button  id="add">ADD</button>
+        </form>
+        <a href="{% url 'deletecompleted' %}"><button class="button">DELETE COMPLETED</button></a>
+        <a href="{% url 'deleteAll' %}"><button class="button">DELETE ALL</button></a>
+        <ul>
+            {% for Todolist in todo_items %}
+                {% if Todolist.completed %}
+                <li id="cancel">{{Todolist.text}}</li>
+                {% else %}
+                <a href="{% url 'completed' Todolist.id %}"><li>{{Todolist.text}}</li></a>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
